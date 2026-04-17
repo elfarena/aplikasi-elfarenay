@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias(['auth.custom' => \App\Http\Middleware\CustomAuth::class]);
+
+        // Percayai semua proxy (Railway, Nginx, dll) agar header HTTPS terbaca dengan benar
+        $middleware->trustProxies(at: '*');
     })->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
