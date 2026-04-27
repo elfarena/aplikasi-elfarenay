@@ -505,11 +505,9 @@
         }
 
         .table td {
-            padding: 12px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
-            display: inline-block;
+            padding: 12px 15px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .badge {
@@ -719,13 +717,13 @@
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; width: 100%;">
                         <div style="display: flex; align-items: center; gap: 4px;">
                             <small style="color: var(--muted); font-size: 11px;">Tgl Masuk:</small>
-                            <input class="date-input" type="date" name="tgl_masuk_dari" value="{{ $tgl_masuk_dari ?? '' }}" style="width: 130px;">
-                            <input class="date-input" type="date" name="tgl_masuk_sampai" value="{{ $tgl_masuk_sampai ?? '' }}" style="width: 130px;">
+                            <input class="date-input" type="date" name="tgl_masuk_dari" value="{{ $tgl_masuk_dari ?? '' }}" style="width: 160px;">
+                            <input class="date-input" type="date" name="tgl_masuk_sampai" value="{{ $tgl_masuk_sampai ?? '' }}" style="width: 160px;">
                         </div>
                         <div style="display: flex; align-items: center; gap: 4px;">
                             <small style="color: var(--muted); font-size: 11px;">Tgl Realisasi:</small>
-                            <input class="date-input" type="date" name="tgl_realisasi_dari" value="{{ $tgl_realisasi_dari ?? '' }}" style="width: 130px;">
-                            <input class="date-input" type="date" name="tgl_realisasi_sampai" value="{{ $tgl_realisasi_sampai ?? '' }}" style="width: 130px;">
+                            <input class="date-input" type="date" name="tgl_realisasi_dari" value="{{ $tgl_realisasi_dari ?? '' }}" style="width: 160px;">
+                            <input class="date-input" type="date" name="tgl_realisasi_sampai" value="{{ $tgl_realisasi_sampai ?? '' }}" style="width: 160px;">
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit">Cari</button>
