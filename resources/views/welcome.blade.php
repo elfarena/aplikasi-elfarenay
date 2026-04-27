@@ -499,6 +499,19 @@
             border-radius: 8px;
         }
 
+        .table th:first-child,
+        .table td:first-child {
+            min-width: 120px;
+        }
+
+        .table td {
+            padding: 12px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
         .badge {
             padding: 3px 9px;
             border-radius: 999px;
@@ -836,14 +849,14 @@
                         <tbody>
                             @forelse($rows as $row)
                                 <tr>
-                                    <td>{{ $row->tanggal_masuk?->format('d/m/Y') }}</td>
+                                    <td>{{ $row->tanggal_masuk?->format('m/d/Y') }}</td>
                                     <td>{{ $row->no_pelanggan }}</td>
                                     <td>{{ $row->pelapor }}</td>
                                     <td>{{ $row->alamat }}</td>
                                     <td>{{ $row->kode_order }}</td>
                                     <td>{{ $row->keterangan }}</td>
                                     <td>{{ $row->stan_meter }}</td>
-                                    <td>{{ $row->tanggal_realisasi?->format('d/m/Y') }}</td>
+                                    <td>{{ $row->tanggal_realisasi?->format('m/d/Y') }}</td>
                                     <td>{{ $row->pelaksana }}</td>
                                     <td>
                                         @if($row->status_realisasi === 'selesai')
