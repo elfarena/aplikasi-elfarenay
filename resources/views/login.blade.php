@@ -207,12 +207,12 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="form-group">
-                        <label for="username">Username</label>
+                        <label for="email">Email</label>
                         <input 
-                            id="username" 
-                            name="username" 
+                            id="email" 
+                            name="email" 
                             type="text" 
-                            placeholder="Masukkan username"
+                            placeholder="Masukkan email"
                             value=""
                             autocomplete="off"
                             required

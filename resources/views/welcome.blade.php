@@ -553,6 +553,69 @@
                 padding: 0 8px 8px;
             }
         }
+        /* Pagination */
+        .pagination-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding: 12px 0 4px;
+        }
+
+        .page-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--primary);
+            background: #fff;
+            border: 1px solid var(--line);
+            transition: 0.15s;
+        }
+
+        .page-btn:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+        }
+
+        .page-active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            pointer-events: none;
+        }
+
+        .page-disabled {
+            color: #adb5c9;
+            pointer-events: none;
+            background: #f8fafd;
+        }
+
+        .page-info {
+            font-size: 12px;
+            color: var(--muted);
+            margin-left: 6px;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -589,7 +652,7 @@
                         <img src="/images/pipa.png" width="40" height="40 " alt="Logo" style="object-fit: cover;">
                     </div>
                     <div>
-                        <p class="profile-name">Kebocoran Admin</p>
+                        <p class="profile-name">{{ auth()->user()->name }}</p>
                         <p class="profile-role">Admin</p>
                     </div>
                 </div>
@@ -685,16 +748,16 @@
 
                 <section class="stats">
                     <div class="stat">
-                        <small>Total Data Ditampilkan</small>
-                        <strong>{{ $rows->count() }}</strong>
+                        <small>Total Data</small>
+                        <strong>{{ $totalData }}</strong>
                     </div>
                     <div class="stat">
                         <small>Masuk / Proses</small>
-                        <strong>{{ $rows->where('status_realisasi', 'masuk')->count() + $rows->where('status_realisasi', 'proses')->count() }}</strong>
+                        <strong>{{ $belumSelesai }}</strong>
                     </div>
                     <div class="stat">
                         <small>Selesai</small>
-                        <strong>{{ $rows->where('status_realisasi', 'selesai')->count() }}</strong>
+                        <strong>{{ $sudahSelesai }}</strong>
                     </div>
                 </section>
 
@@ -820,6 +883,11 @@
                                     <td>{{ $row->sumber }}</td>
                                     <td>
                                         <a href="{{ route('order-teknik.edit', $row->id) }}" class="btn-edit" style="background: var(--primary); color: #fff; padding: 4px 10px; border-radius: 4px; text-decoration: none; font-size: 12px;">Edit</a>
+                                        <form method="POST" action="{{ route('order-teknik.destroy', $row->id) }}" style="display:inline;" onsubmit="return confirm('Hapus data ini? Tindakan tidak bisa dibatalkan.')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-danger">Hapus</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
@@ -830,6 +898,7 @@
                         </tbody>
                             </table>
                         </div>
+                        {{ $rows->links('partials.pagination') }}
                     </div>
                 </section>
                 </div>

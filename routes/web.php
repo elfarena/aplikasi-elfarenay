@@ -15,3 +15,5 @@ Route::get('/report/export/csv', [OrderTeknikController::class, 'exportCsv'])->n
 Route::get('/report/export/word', [OrderTeknikController::class, 'exportWord'])->name('report.export.word')->middleware('auth.custom');
 Route::get('/order-teknik/{orderTeknik}/edit', [OrderTeknikController::class, 'edit'])->name('order-teknik.edit')->middleware('auth.custom');
 Route::put('/order-teknik/{orderTeknik}', [OrderTeknikController::class, 'update'])->name('order-teknik.update')->middleware('auth.custom');
+Route::delete('/order-teknik/{orderTeknik}', [OrderTeknikController::class, 'destroy'])->name('order-teknik.destroy')->middleware('auth.custom');
+
