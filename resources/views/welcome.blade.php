@@ -883,36 +883,7 @@
             const textInputs = document.querySelectorAll('#tanggal_masuk, #no_pelanggan, #pelapor, #alamat, #kode_order, #keterangan, #stan_meter, #tanggal_realisasi, #pelaksana');
             const form = document.querySelector('form[method="POST"]');
 
-            // Auto-format tanggal input
-            const tanggalInput = document.getElementById('tanggal_realisasi');
-            const tanggalMasukInput = document.getElementById('tanggal_masuk');
-            
-            // Filter tanggal inputs
-            const filterTglMasukDari = document.querySelector('input[name="tgl_masuk_dari"]');
-            const filterTglMasukSampai = document.querySelector('input[name="tgl_masuk_sampai"]');
-            const filterTglRealisasiDari = document.querySelector('input[name="tgl_realisasi_dari"]');
-            const filterTglRealisasiSampai = document.querySelector('input[name="tgl_realisasi_sampai"]');
-            
-            function formatTanggalInput(input) {
-                if (!input) return;
-                input.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length >= 2) {
-                        value = value.substring(0, 2) + '/' + value.substring(2);
-                    }
-                    if (value.length >= 5) {
-                        value = value.substring(0, 5) + '/' + value.substring(5, 9);
-                    }
-                    e.target.value = value;
-                });
-            }
-            
-            formatTanggalInput(tanggalInput);
-            formatTanggalInput(tanggalMasukInput);
-            formatTanggalInput(filterTglMasukDari);
-            formatTanggalInput(filterTglMasukSampai);
-            formatTanggalInput(filterTglRealisasiDari);
-            formatTanggalInput(filterTglRealisasiSampai);
+            // Handle Enter navigation for text inputs
 
             // Handle Enter navigation for text inputs
             textInputs.forEach((input, index) => {
