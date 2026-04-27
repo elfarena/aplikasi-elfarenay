@@ -50,8 +50,8 @@ class OrderTeknikController extends Controller
             'nama_pelanggan'   => ['nullable', 'string', 'max:255'],
             'pelapor'          => ['nullable', 'string', 'max:255'],
             'alamat'           => ['nullable', 'string', 'max:255'],
-            'tanggal'          => ['nullable', 'regex:/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/'],
-            'tanggal_masuk'    => ['nullable', 'regex:/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/'],
+            'tanggal'          => ['nullable', 'date'],
+            'tanggal_masuk'    => ['nullable', 'date'],
             'kelurahan'        => ['nullable', 'string', 'max:255'],
             'kecamatan'        => ['nullable', 'string', 'max:255'],
             'zona'             => ['nullable', 'string', 'max:20'],
@@ -61,7 +61,7 @@ class OrderTeknikController extends Controller
             'diameter'         => ['nullable', 'string', 'max:20'],
             'keterangan'       => ['nullable', 'string', 'max:255'],
             'stan_meter'       => ['nullable', 'string', 'max:30'],
-            'tanggal_realisasi'=> ['nullable', 'regex:/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/'],
+            'tanggal_realisasi'=> ['nullable', 'date'],
             'pelaksana'        => ['nullable', 'string', 'max:50'],
             'status_realisasi' => ['nullable', 'in:masuk,proses,selesai'],
             'sumber'           => ['nullable', 'string', 'max:50'],
@@ -73,11 +73,11 @@ class OrderTeknikController extends Controller
         }
 
         if (empty($validated['tanggal'])) {
-            $validated['tanggal'] = now()->format('d/m/Y');
+            $validated['tanggal'] = now()->toDateString();
         }
 
         if (empty($validated['tanggal_masuk'])) {
-            $validated['tanggal_masuk'] = now()->format('d/m/Y');
+            $validated['tanggal_masuk'] = now()->toDateString();
         }
 
         $validated['kelurahan']       = $validated['kelurahan'] ?? '-';
@@ -103,8 +103,8 @@ class OrderTeknikController extends Controller
             'nama_pelanggan'   => ['nullable', 'string', 'max:255'],
             'pelapor'          => ['nullable', 'string', 'max:255'],
             'alamat'           => ['nullable', 'string', 'max:255'],
-            'tanggal'          => ['nullable', 'regex:/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/'],
-            'tanggal_masuk'    => ['nullable', 'regex:/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/'],
+            'tanggal'          => ['nullable', 'date'],
+            'tanggal_masuk'    => ['nullable', 'date'],
             'kelurahan'        => ['nullable', 'string', 'max:255'],
             'kecamatan'        => ['nullable', 'string', 'max:255'],
             'zona'             => ['nullable', 'string', 'max:20'],
@@ -114,7 +114,7 @@ class OrderTeknikController extends Controller
             'diameter'         => ['nullable', 'string', 'max:20'],
             'keterangan'       => ['nullable', 'string', 'max:255'],
             'stan_meter'       => ['nullable', 'string', 'max:30'],
-            'tanggal_realisasi'=> ['nullable', 'regex:/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/'],
+            'tanggal_realisasi'=> ['nullable', 'date'],
             'pelaksana'        => ['nullable', 'string', 'max:50'],
             'status_realisasi' => ['nullable', 'in:masuk,proses,selesai'],
             'sumber'           => ['nullable', 'string', 'max:50'],
@@ -126,11 +126,11 @@ class OrderTeknikController extends Controller
         }
 
         if (empty($validated['tanggal'])) {
-            $validated['tanggal'] = now()->format('d/m/Y');
+            $validated['tanggal'] = now()->toDateString();
         }
 
         if (empty($validated['tanggal_masuk'])) {
-            $validated['tanggal_masuk'] = now()->format('d/m/Y');
+            $validated['tanggal_masuk'] = now()->toDateString();
         }
 
         $validated['kelurahan']       = $validated['kelurahan'] ?? $orderTeknik->kelurahan ?? '-';
@@ -220,8 +220,9 @@ class OrderTeknikController extends Controller
 
         // Monthly statistics (last 6 months)
         $monthlyStats = $query->clone()
-            ->selectRaw("DATE_FORMAT(STR_TO_DATE(tanggal_realisasi, '%d/%m/%Y'), '%Y-%m') as month, COUNT(*) as total")
-            ->whereRaw("STR_TO_DATE(tanggal_realisasi, '%d/%m/%Y') >= DATE_SUB(NOW(), INTERVAL 6 MONTH)")
+            ->selectRaw("DATE_FORMAT(tanggal_realisasi, '%Y-%m') as month, COUNT(*) as total")
+            ->whereNotNull('tanggal_realisasi')
+            ->where('tanggal_realisasi', '>=', now()->subMonths(6)->toDateString())
             ->groupBy('month')
             ->orderBy('month')
             ->pluck('total', 'month')

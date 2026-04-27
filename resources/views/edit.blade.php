@@ -458,7 +458,7 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="profile-name">Kebocoran Admin</p>
+                        <p class="profile-name">{{ auth()->user()->name }}</p>
                         <p class="profile-role">Admin</p>
                     </div>
                 </div>
@@ -481,7 +481,7 @@
                             <div class="form-grid">
                                 <div class="field">
                                     <label for="tanggal_masuk">Tanggal Masuk</label>
-                                    <input id="tanggal_masuk" name="tanggal_masuk" type="text" placeholder="dd/mm/yyyy" value="{{ old('tanggal_masuk', $orderTeknik->tanggal_masuk) }}" maxlength="10">
+                                    <input id="tanggal_masuk" name="tanggal_masuk" type="date" value="{{ old('tanggal_masuk', $orderTeknik->tanggal_masuk?->format('Y-m-d')) }}">
                                 </div>
                                 <div class="field">
                                     <label for="no_pelanggan">Nomor Pelanggan</label>
@@ -509,7 +509,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="tanggal_realisasi">Tanggal Realisasi</label>
-                                    <input id="tanggal_realisasi" name="tanggal_realisasi" type="text" placeholder="dd/mm/yyyy" value="{{ old('tanggal_realisasi', $orderTeknik->tanggal_realisasi) }}" maxlength="10">
+                                    <input id="tanggal_realisasi" name="tanggal_realisasi" type="date" value="{{ old('tanggal_realisasi', $orderTeknik->tanggal_realisasi?->format('Y-m-d')) }}">
                                 </div>
                                 <div class="field">
                                     <label for="pelaksana">Pelaksana</label>
@@ -557,26 +557,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const tanggalInput = document.getElementById('tanggal_realisasi');
-            const tanggalMasukInput = document.getElementById('tanggal_masuk');
-            
-            function formatTanggalInput(input) {
-                if (!input) return;
-                input.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length >= 2) {
-                        value = value.substring(0, 2) + '/' + value.substring(2);
-                    }
-                    if (value.length >= 5) {
-                        value = value.substring(0, 5) + '/' + value.substring(5, 9);
-                    }
-                    e.target.value = value;
-                });
-            }
-            
-            formatTanggalInput(tanggalInput);
-            formatTanggalInput(tanggalMasukInput);
-
             // Custom Select functionality
             document.querySelectorAll('.custom-select').forEach(select => {
                 const trigger = select.querySelector('.custom-select-trigger');

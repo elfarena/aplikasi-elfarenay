@@ -28,6 +28,12 @@ class OrderTeknik extends Model
         'no_pelanggan',
     ];
 
+    protected $casts = [
+        'tanggal'           => 'date',
+        'tanggal_masuk'     => 'date',
+        'tanggal_realisasi' => 'date',
+    ];
+
     // === QUERY SCOPES ===
 
     /**
@@ -57,7 +63,6 @@ class OrderTeknik extends Model
                     ->orWhere('kode_order', 'like', "%{$q}%")
                     ->orWhere('keterangan', 'like', "%{$q}%")
                     ->orWhere('stan_meter', 'like', "%{$q}%")
-                    ->orWhere('tanggal_realisasi', 'like', "%{$q}%")
                     ->orWhere('pelaksana', 'like', "%{$q}%")
                     ->orWhere('status_realisasi', 'like', "%{$q}%")
                     ->orWhere('sumber', 'like', "%{$q}%");
@@ -68,67 +73,44 @@ class OrderTeknik extends Model
     }
 
     /**
-     * Filter rentang tanggal masuk (format dd/mm/yyyy).
+     * Filter rentang tanggal masuk (format yyyy-mm-dd dari date input).
      */
     public function scopeFilterTanggalMasuk($query, string $dari, string $sampai)
     {
-        $pattern = '/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/';
-
-        if ($dari !== '' && preg_match($pattern, $dari)) {
-            $query->whereRaw(
-                "STR_TO_DATE(tanggal_masuk, '%d/%m/%Y') >= STR_TO_DATE(?, '%d/%m/%Y')",
-                [$dari]
-            );
+        if ($dari !== '') {
+            $query->whereDate('tanggal_masuk', '>=', $dari);
         }
-
-        if ($sampai !== '' && preg_match($pattern, $sampai)) {
-            $query->whereRaw(
-                "STR_TO_DATE(tanggal_masuk, '%d/%m/%Y') <= STR_TO_DATE(?, '%d/%m/%Y')",
-                [$sampai]
-            );
+        if ($sampai !== '') {
+            $query->whereDate('tanggal_masuk', '<=', $sampai);
         }
 
         return $query;
     }
 
     /**
-     * Filter rentang tanggal realisasi (format dd/mm/yyyy).
+     * Filter rentang tanggal realisasi (format yyyy-mm-dd dari date input).
      */
     public function scopeFilterTanggalRealisasi($query, string $dari, string $sampai)
     {
-        $pattern = '/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/';
-
-        if ($dari !== '' && preg_match($pattern, $dari)) {
-            $query->whereRaw(
-                "STR_TO_DATE(tanggal_realisasi, '%d/%m/%Y') >= STR_TO_DATE(?, '%d/%m/%Y')",
-                [$dari]
-            );
+        if ($dari !== '') {
+            $query->whereDate('tanggal_realisasi', '>=', $dari);
         }
-
-        if ($sampai !== '' && preg_match($pattern, $sampai)) {
-            $query->whereRaw(
-                "STR_TO_DATE(tanggal_realisasi, '%d/%m/%Y') <= STR_TO_DATE(?, '%d/%m/%Y')",
-                [$sampai]
-            );
+        if ($sampai !== '') {
+            $query->whereDate('tanggal_realisasi', '<=', $sampai);
         }
 
         return $query;
     }
 
     /**
-     * Filter tanggal spesifik (cocok ke tanggal_masuk atau tanggal_realisasi).
+     * Filter tanggal spesifik (yyyy-mm-dd).
      */
     public function scopeFilterTanggal($query, string $tanggal)
     {
-        $pattern = '/^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/';
-
-        if ($tanggal !== '' && preg_match($pattern, $tanggal)) {
+        if ($tanggal !== '') {
             $query->where(function ($q) use ($tanggal) {
-                $q->where('tanggal_masuk', $tanggal)
-                  ->orWhereRaw(
-                      "STR_TO_DATE(tanggal_realisasi, '%d/%m/%Y') = STR_TO_DATE(?, '%d/%m/%Y')",
-                      [$tanggal]
-                  );
+                $q->whereDate('tanggal_masuk', $tanggal)
+                  ->orWhereDate('tanggal_realisasi', $tanggal);
             });
         }
 

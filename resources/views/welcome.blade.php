@@ -706,41 +706,13 @@
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; width: 100%;">
                         <div style="display: flex; align-items: center; gap: 4px;">
                             <small style="color: var(--muted); font-size: 11px;">Tgl Masuk:</small>
-                            <input
-                                class="date-input"
-                                type="text"
-                                name="tgl_masuk_dari"
-                                value="{{ $tgl_masuk_dari ?? '' }}"
-                                placeholder="Dari (dd/mm/yyyy)"
-                                style="width: 110px;"
-                            >
-                            <input
-                                class="date-input"
-                                type="text"
-                                name="tgl_masuk_sampai"
-                                value="{{ $tgl_masuk_sampai ?? '' }}"
-                                placeholder="Sampai (dd/mm/yyyy)"
-                                style="width: 110px;"
-                            >
+                            <input class="date-input" type="date" name="tgl_masuk_dari" value="{{ $tgl_masuk_dari ?? '' }}" style="width: 130px;">
+                            <input class="date-input" type="date" name="tgl_masuk_sampai" value="{{ $tgl_masuk_sampai ?? '' }}" style="width: 130px;">
                         </div>
                         <div style="display: flex; align-items: center; gap: 4px;">
                             <small style="color: var(--muted); font-size: 11px;">Tgl Realisasi:</small>
-                            <input
-                                class="date-input"
-                                type="text"
-                                name="tgl_realisasi_dari"
-                                value="{{ $tgl_realisasi_dari ?? '' }}"
-                                placeholder="Dari (dd/mm/yyyy)"
-                                style="width: 110px;"
-                            >
-                            <input
-                                class="date-input"
-                                type="text"
-                                name="tgl_realisasi_sampai"
-                                value="{{ $tgl_realisasi_sampai ?? '' }}"
-                                placeholder="Sampai (dd/mm/yyyy)"
-                                style="width: 110px;"
-                            >
+                            <input class="date-input" type="date" name="tgl_realisasi_dari" value="{{ $tgl_realisasi_dari ?? '' }}" style="width: 130px;">
+                            <input class="date-input" type="date" name="tgl_realisasi_sampai" value="{{ $tgl_realisasi_sampai ?? '' }}" style="width: 130px;">
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit">Cari</button>
@@ -770,7 +742,7 @@
                             <div class="form-grid">
                         <div class="field">
                             <label for="tanggal_masuk">Tanggal Masuk</label>
-                            <input id="tanggal_masuk" name="tanggal_masuk" type="text" placeholder="dd/mm/yyyy" value="{{ old('tanggal_masuk', now()->format('d/m/Y')) }}" maxlength="10">
+                            <input id="tanggal_masuk" name="tanggal_masuk" type="date" value="{{ old('tanggal_masuk', now()->format('Y-m-d')) }}">
                         </div>
                         <div class="field">
                             <label for="no_pelanggan">Nomor Pelanggan</label>
@@ -798,7 +770,7 @@
                         </div>
                         <div class="field">
                             <label for="tanggal_realisasi">Tanggal Realisasi</label>
-                            <input id="tanggal_realisasi" name="tanggal_realisasi" type="text" placeholder="dd/mm/yyyy" value="{{ old('tanggal_realisasi') }}" maxlength="10">
+                            <input id="tanggal_realisasi" name="tanggal_realisasi" type="date" value="{{ old('tanggal_realisasi') }}">
                         </div>
                         <div class="field">
                             <label for="pelaksana">Pelaksana</label>
@@ -864,14 +836,14 @@
                         <tbody>
                             @forelse($rows as $row)
                                 <tr>
-                                    <td>{{ $row->tanggal_masuk }}</td>
+                                    <td>{{ $row->tanggal_masuk?->format('d/m/Y') }}</td>
                                     <td>{{ $row->no_pelanggan }}</td>
                                     <td>{{ $row->pelapor }}</td>
                                     <td>{{ $row->alamat }}</td>
                                     <td>{{ $row->kode_order }}</td>
                                     <td>{{ $row->keterangan }}</td>
                                     <td>{{ $row->stan_meter }}</td>
-                                    <td>{{ $row->tanggal_realisasi }}</td>
+                                    <td>{{ $row->tanggal_realisasi?->format('d/m/Y') }}</td>
                                     <td>{{ $row->pelaksana }}</td>
                                     <td>
                                         @if($row->status_realisasi === 'selesai')
